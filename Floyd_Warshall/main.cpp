@@ -65,9 +65,6 @@ int main(){
     cout << "Number of threads between: "<< endl;
     cin >> threads;
 
-    int serial;
-    cin >> serial;
-
     int maxThread = omp_get_max_threads();
 
     if(threads <= 0){
@@ -79,10 +76,10 @@ int main(){
     vector<vector<int>> dist1 = getRandomMatrix(V);
     vector<vector<int>> dist2 = dist1;
 
-    if(serial){auto start = omp_get_wtime();
+    auto start = omp_get_wtime();
     normalFloydWarshall(dist1);
     auto end = omp_get_wtime();
-    cout << "Serial: "<< end - start <<" sec\n";}
+    cout << "Serial: "<< end - start <<" sec\n";
 
     omp_set_num_threads(threads);
 
