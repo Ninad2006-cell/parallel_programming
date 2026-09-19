@@ -60,20 +60,34 @@ int main(){
     int V;
     cout << "Please enter the number of Nodes:";
     cin >> V;
+
+    int threads;
+    cout << "Number of threads between: "<< endl;
+    cin >> threads;
+
+    int serial;
+    cin >> serial;
+
+    int maxThread = omp_get_max_threads();
+
+    if(threads <= 0){
+        threads = 1;
+    }else if(threads > maxThread){
+        threads = maxThread;
+    }
+
     vector<vector<int>> dist1 = getRandomMatrix(V);
     vector<vector<int>> dist2 = dist1;
 
-    auto start = omp_get_wtime();
-
+    if(serial){auto start = omp_get_wtime();
     normalFloydWarshall(dist1);
-
     auto end = omp_get_wtime();
-    cout << "Serial: "<< end - start <<" sec\n";
+    cout << "Serial: "<< end - start <<" sec\n";}
+
+    omp_set_num_threads(threads);
 
     auto start1 = omp_get_wtime();
-
     parallelFloydWarshall(dist2);
-
     auto end1 = omp_get_wtime();
     cout << "Parallel: "<< end1 - start1 << " sec\n";
 
